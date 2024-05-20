@@ -1,20 +1,11 @@
 # SELinux
 
-## Status, enabling and disabling
-
-| Action                                  | Command        |
-| :---                                    | :---           |
-| Check status (detailed)                 | `sestatus`     |
-| Check status (brief)                    | `getenforce`   |
-| Enable (temporarily)                    | `setenforce 1` |
-| Disable (temporarily - permissive mode) | `setenforce 0` |
-
 ## Booleans
 
 | Action                     | Command                           |
 | :---                       | :---                              |
 | List all booleans          | `getsebool -a`                    |
-| List specific booleans     | `getsebool -a \007C grep PATTERN` |
+| List specific booleans     | `getsebool -a \| grep PATTERN` |
 | Set boolean (until reboot) | `setsebool BOOLEAN VALUE`         |
 |                            | `VALUE` can be 0/false or 1/true  |
 | Set boolean permanently    | `setsebool -P BOOLEAN VALUE`      |
@@ -32,8 +23,8 @@
 
 **Examples:**
 
-- Set default context of `/srv/web` and its content (recursively) to `httpd_sys_content_t`:
-    - `semanage fcontext -a -t httpd_sys_content_t "/srv/web(/.*)?"`
+Set default context of /srv/web and its content (recursively) to httpd_sys_content_t:
+`semanage fcontext -a -t httpd_sys_content_t "/srv/web(/.*)?"`
 
 ## Creating a new SELinux policy module
 
