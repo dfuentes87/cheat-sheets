@@ -1,6 +1,11 @@
-# Bash best practices
+# Bash
 
-An attempt to bring order in good advice on writing Bash scripts I collected from several sources.
+## Keyboard shortcuts
+
+| Shortcut/Commands | Task                                                         |
+| :---     | :---                                                         |
+| `Ctrl-O` | Execute current line from history, on return gives next line |
+| `Ctrl-U` | Delete from cursor to beginning of line                      |
 
 ## General
 

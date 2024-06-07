@@ -5,25 +5,13 @@
 ```conf
 ## Tmux configuration
 
-# remap prefix to C-a
-set -g prefix C-a
-unbind C-b
-bind C-a send-prefix
-
-# force config file reload with C-a r
-unbind r
-bind r source-file ~/.tmux.conf
-
 # Splitting
 unbind %
 bind - split-window -v
 bind = split-window -h
-
 ```
 
 ## Key bindings
-
-Key bindings here may not be standard, but depend on the configuration above. Precede every key with the prefix `C-a`.
 
 | Task                | Key             |
 | :---                | :---            |
@@ -45,8 +33,8 @@ Key bindings here may not be standard, but depend on the configuration above. Pr
 | Task              | Command                    |
 | :---              | :---                       |
 | List sessions     | `tmux ls`                  |
-| Attach to session | `tmux attach -t NUM`       |
-| Kill session      | `tmux kill-session -t NUM` |
+| Attach to session | `tmux attach -t NAME`       |
+| Kill session      | `tmux kill-session -t NAME` |
 
 ## References
 

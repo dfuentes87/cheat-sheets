@@ -26,6 +26,27 @@
 Set default context of /srv/web and its content (recursively) to httpd_sys_content_t:
 `semanage fcontext -a -t httpd_sys_content_t "/srv/web(/.*)?"`
 
+## Managing SELinux
+
+| Action                                           | Command                                |                    
+| :---                                             | :---                                   |  
+| Set individual domain permissive                 | `semanage permissive -a httpd_t`       |             
+| Mappings between SELinux and Linux user accounts | `semanage login -l`                    |
+| SELinux context of processes                     | `ps -eZ`                               |                          
+| SELinux context associated with your user        | `id -Z`                                |                 
+| Show all booleans                                | `getsebool -a`                         |
+| Turn off boolean                                 | `setsebool [boolean] 0`                |
+| Turn on boolean                                  | `setsebool [boolean] 1`                |
+| Make boolean permanent                           | `setsebool -P [boolean] [0\|1]`         |
+| Change SELinux context for a desired folder      | `chcon -t httpd_sys_content_t /var/www/html/index.html` |
+| Resets the original context of a directory       | `restorecon -vR /var/www/html/`        |                                        |
+
+
+### Resources
+
+* [SELINUX USER'S AND ADMINISTRATOR'S GUIDE](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7-beta/html/selinux_users_and_administrators_guide/index)
+
+
 ## Creating a new SELinux policy module
 
 TODO
