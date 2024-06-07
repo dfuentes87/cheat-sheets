@@ -96,12 +96,6 @@ TODO: `netsh` is the "old" way of manipulating firewall settings and may be remo
     Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
     ```
 
-* Install BoxStarter
-
-    ```PowerShell
-    choco install Boxstarter
-    ```
-
 Useful Chocolatey commands:
 
 | Task                    | Command                             |

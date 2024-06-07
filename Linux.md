@@ -87,7 +87,6 @@ Traditionally, logs are text files in `/var/log`. Some services still write thei
 
 | Action                                      | Command                 |
 | :---                                        | :---                    |
-| Live view of log FILE                       | `tail -f /var/log/FILE` |
 | Colorized live view of boot/kernel messages | `dmesg -wH`             |
 
 ### Resources
@@ -104,8 +103,7 @@ The `firewalld-cmd` should run with root privileges, do always use `sudo`.
 | List preconfigured services      | `firewall-cmd --get-services`                                    |
 | Enabled features in current zone | `firewall-cmd --list-all`            |
 | Turn panic mode on               | `firewall-cmd --panic-on`                                        |
-| Turn panic mode off              | `firewall-cmd --panic-off`                                       |
-|                                  |                                                                  |
+| Turn panic mode off              | `firewall-cmd --panic-off`                                       |                                                                  |
 
 * Configuration is stored in `/etc/firewalld` and `/usr/lib/firewalld`
 * The default zone is `public`, which you don't have to specify on the command line when adding/removing rules
@@ -116,24 +114,3 @@ The `firewalld-cmd` should run with root privileges, do always use `sudo`.
 * [Using Firewalls, in *RHEL 7 Security Guide*](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Security_Guide/sec-Using_Firewalls.html)
 * [FirewallD, in *Fedora Project Wiki*](https://fedoraproject.org/wiki/FirewallD#Using_firewall-cmd)
 * [Deprecated Linux networking commands and their replacements](https://dougvitale.wordpress.com/2011/12/21/deprecated-linux-networking-commands-and-their-replacements/)
-
-## Managing SELinux
-
-| Action                                           | Command                                |                    
-| :---                                             | :---                                   |  
-| Set individual domain permissive                 | `semanage permissive -a httpd_t`       |             
-| Mappings between SELinux and Linux user accounts | `semanage login -l`                    |
-| SELinux context of processes                     | `ps -eZ`                               |                          
-| SELinux context associated with your user        | `id -Z`                                |                 
-| Show all booleans                                | `getsebool -a`                         |
-| Turn off boolean                                 | `setsebool [boolean] 0`                |
-| Turn on boolean                                  | `setsebool [boolean] 1`                |
-| Make boolean permanent                           | `setsebool -P [boolean] [0\|1]`         |
-| Change SELinux context for a desired folder      | `chcon -t httpd_sys_content_t /var/www/html/index.html` |
-| Resets the original context of a directory       | `restorecon -vR /var/www/html/`        |
-|                                                  |                                        |
-
-
-### Resources
-
-* [SELINUX USER'S AND ADMINISTRATOR'S GUIDE](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7-beta/html/selinux_users_and_administrators_guide/index)
