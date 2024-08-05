@@ -2,41 +2,38 @@
 
 ## Configuration
 
+Your tmux configuration file should be named .tmux.conf and stored in your home directory.
 ```conf
-## Tmux configuration
-
-# Splitting
-unbind %
-bind - split-window -v
-bind = split-window -h
+# Bind OPTION + Arrow Keys to switch between tmux panes
+bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
 ```
+After modifications, to refresh running tmux: `tmux source-file .tmux.conf`
 
-## Key bindings
+## Basic Commands
+All commands start with the prefix, which by default is CTRL + B
 
-| Task                | Key             |
-| :---                | :---            |
-| New window          | `c`             |
-| Go to window        | number          |
-| New horizontal pane | `-`             |
-| New vertical pane   | `=`             |
-| Go to other pane    | arrow keys      |
-| Toggle full screen  | `z`             |
-| Scroll up/down (*)  | `PgUp` / `PgDn` |
-| Detach              | `d`             |
-| Reload config       | `r`             |
+| Task                          | Key             |
+| :---                          | :---            |
+| New window                    | `c`             |
+| Go to window                  | number          |
+| New horizontal pane           | `"`             |
+| New vertical pane             | `%`             |
+| Move to the (n)ext window     | n               |
+| Move to the (p)revious window | p               |
+| Reload config                 | `r`             |
 
 (*) Exit scroll mode with `C-c`
 
 ## Command line options
 
-
-| Task              | Command                    |
-| :---              | :---                       |
-| List sessions     | `tmux ls`                  |
+| Task              | Command                     |
+| :---              | :---                        |
+| List sessions     | `tmux new -s NAME`          |
 | Attach to session | `tmux attach -t NAME`       |
 | Kill session      | `tmux kill-session -t NAME` |
 
 ## References
-
-- Glenn Goodrich, [Tmux: a Simple Start](https://www.sitepoint.com/tmux-a-simple-start/)
-- Steven De Coeyer, [Verslag Techtalk - Vim en tmux](https://www.openminds.be/nl/blog/detail/verslag-techtak-vim-en-tmux)
+- [Tmux Cheat Sheet & Quick Reference](https://tmuxcheatsheet.com/)
