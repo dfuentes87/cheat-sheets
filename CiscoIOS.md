@@ -1,4 +1,4 @@
-# Cisco IOS
+# Cisco Internetworking Operating System (IOS)
 
 ## Working with console cables
 
