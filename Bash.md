@@ -114,7 +114,7 @@
 Bash can be hard to read and interpret. Using functions can greatly improve readability. Principles from Clean Code apply here.
 
 - Apply the [Single Responsibility Principle](https://en.wikipedia.org/wiki/Single_responsibility_principle): a function does one thing.
-- [Don't mix levels of abstraction](http://sivalabs.in/clean-code-dont-mix-different-levels-of-abstractions/)
+- [Don't mix levels of abstraction](https://www.sivalabs.in/clean-code-dont-mix-different-levels-of-abstractions/)
 - Describe the usage of each function: number of arguments, return value, output
 - Declare variables with a meaningful name for positional parameters of functions
 
@@ -185,14 +185,13 @@ Bash is not very easy to debug. There's no built-in debugger like you have with 
     - Run the script with `bash -x myscript.sh`
     - Put `set -x` at the top of the script
     - If you only want debug output in a specific section of the script, put `set -x` before and `set +x` after the section.
-- Write lots of log messages to stdout or stderr so it's easier to drill down to what part of the script contains problematic code. I have defined a few functions for logging, you can find them [in my dotfiles repository](https://github.com/bertvv/dotfiles/blob/master/.vim/UltiSnips/sh.snippets#L52).
-- Use [bashdb](http://bashdb.sourceforge.net/)
+- Write lots of log messages to stdout or stderr so it's easier to drill down to what part of the script contains problematic code. I have defined a few functions for logging, you can find them [in my dotfiles repository](https://github.com/bertvv/dotfiles/blob/main/vim/.vim/UltiSnips/sh.snippets).
 
 ## Shell script template
 
 An annotated template for Bash shell scripts:
 
-For now, see <https://github.com/bertvv/dotfiles/blob/master/.vim/templates/sh>
+For now, see <https://github.com/bertvv/dotfiles/blob/main/vim/.vim/UltiSnips/sh.snippets>
 
 ## Resources
 
@@ -222,15 +221,8 @@ For now, see <https://github.com/bertvv/dotfiles/blob/master/.vim/templates/sh>
 ### Templates
 
 - bash-script-template <https://github.com/ralish/bash-script-template>
-- Bash3 Boilerplate <http://bash3boilerplate.sh/>
+- Bash3 Boilerplate <https://github.com/kvz/bash3boilerplate>
 
-### Portable shell scripts
-
-- <https://wiki.ubuntu.com/DashAsBinSh>
-- <http://pubs.opengroup.org/onlinepubs/009695399/utilities/contents.html>
-- <http://sites.harvard.edu/~lib113/reference/unix/portable_scripting.html>
-- <https://www.gnu.org/software/autoconf/manual/autoconf.html#Portable-Shell>
-
-### Fun
+### Learning
 
 - <https://cmdchallenge.com/>
