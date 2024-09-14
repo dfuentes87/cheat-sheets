@@ -34,10 +34,3 @@ Commands work in normal mode, unless specified explicitly.
 | `C-w q`       | close split              |
 | `C-w up/down` | switch split             |
 | `C-w C-w`     | cycle splits             |
-
-
-## Vim resources
-
-* Vim tips and tricks: <https://www.cs.oberlin.edu/~kuperman/help/vim/home.html>
-* Movements: <https://github.com/LevelbossMike/vim_shortcut_wallpaper>
-* Langworth, I. (2017). *Vim After 15 Years.* Retrieved 2017-11-15 from <https://statico.github.io/vim3.html>

@@ -47,6 +47,3 @@ Working on the master branch directly will cause merge conflicts, and a messy hi
 ## Resources
 
 - <https://help.github.com/articles/about-pull-request-merges/>
-
-
-
