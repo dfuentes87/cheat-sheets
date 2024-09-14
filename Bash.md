@@ -1,12 +1,5 @@
 # Bash
 
-## Keyboard shortcuts
-
-| Shortcut/Commands | Task                                                         |
-| :---     | :---                                                         |
-| `Ctrl-O` | Execute current line from history, on return gives next line |
-| `Ctrl-U` | Delete from cursor to beginning of line                      |
-
 ## General
 
 - The principles of [Clean Code](https://www.pearson.com/us/higher-education/program/Martin-Clean-Code-A-Handbook-of-Agile-Software-Craftsmanship/PGM63937.html) apply to Bash as well
@@ -47,6 +40,8 @@
 
 - Use `nohup foo | cat &` if `foo` must be started from a terminal and run in the background.
 
+- Prepend a command with `\` to override alias/builtin lookup.
+
 ## Variables
 
 - Prefer local variables within functions over global variables
@@ -59,17 +54,64 @@
 - Positional parameters of the script should be checked, those of functions should not
 - Some loops happen in subprocesses, so don’t be surprised when setting variabless does nothing after them. Use stdout and `grep`ing to communicate status.
 
-## Substitution
+## Colors
 
-- Always use `$(cmd)` for command substitution (as opposed to backquotes)
-- Prepend a command with `\` to override alias/builtin lookup. E.g.:
+Don't output ANSI colour codes directly - your output could redirect to a file, or perhaps the user simply prefers no colour. Use tput instead, and add a little snippet like this to the top of your script:
 
-    ```ShellSession
-    $ \time bash -c "dnf list installed | wc -l"
-    5466
-    1.32user 0.12system 0:01.45elapsed 99%CPU (0avgtext+0avgdata 97596maxresident)k
-    0inputs+136outputs (0major+37743minor)pagefaults 0swaps
-    ```
+`command -v tput &>/dev/null && [ -t 1 ] && [ -z "${NO_COLOR:-}" ] || tput() { true; }`
+
+This checks that the tput command exists (more reliable than `which`), that stdout is a tty, and that the NO_COLOR env var is not set. If any of these conditions are false, a no-op tput function is defined.
+
+Summarized from source: https://news.ycombinator.com/item?id=41536036
+
+### Basics
+```
+tput sgr0
+normal=$(tput sgr0)
+bold=$(tput bold) # was: Bright
+blink=$(tput blink)
+reverse=$(tput smso)
+underline=$(tput smul)
+```
+
+### Foreground colors
+```
+black=$(tput setaf 0)        #000000
+maroon=$(tput setaf 1)       #800000
+green=$(tput setaf 2)        #008000
+olive=$(tput setaf 3)        #808000
+navy=$(tput setaf 4)         #000080
+purple=$(tput setaf 5)       #800080
+teal=$(tput setaf 6)         #008080
+silver=$(tput setaf 7)       #c0c0c0
+gray=$(tput setaf 8)         #808080
+red=$(tput setaf 9)          #ff0000
+lime=$(tput setaf 10)        #00ff00
+yellow=$(tput setaf 11)      #ffff00
+blue=$(tput setaf 12)        #0000ff
+magenta=$(tput setaf 13)     #ff00ff
+aqua=$(tput setaf 14)        #00ffff
+white=$(tput setaf 15)       #ffffff
+```
+### Background colors
+```
+black_bg=$(tput setab 0)     #000000
+maroon_bg=$(tput setab 1)    #800000
+green_bg=$(tput setab 2)     #008000
+olive_bg=$(tput setab 3)     #808000
+navy_bg=$(tput setab 4)      #000080
+purple_bg=$(tput setab 5)    #800080
+teal_bg=$(tput setab 6)      #008080
+silver_bg=$(tput setab 7)    #c0c0c0
+gray_bg=$(tput setab 8)      #808080
+red_bg=$(tput setab 9)       #ff0000
+lime_bg=$(tput setab 10)     #00ff00
+yellow_bg=$(tput setab 11)   #ffff00
+blue_bg=$(tput setab 12)     #0000ff
+magenta_bg=$(tput setab 13)  #ff00ff
+aqua_bg=$(tput setab 14)     #00ffff
+white_bg=$(tput setab 15)    #ffffff
+```
 
 ## Output and redirection
 
@@ -185,44 +227,3 @@ Bash is not very easy to debug. There's no built-in debugger like you have with 
     - Run the script with `bash -x myscript.sh`
     - Put `set -x` at the top of the script
     - If you only want debug output in a specific section of the script, put `set -x` before and `set +x` after the section.
-- Write lots of log messages to stdout or stderr so it's easier to drill down to what part of the script contains problematic code. I have defined a few functions for logging, you can find them [in my dotfiles repository](https://github.com/bertvv/dotfiles/blob/main/vim/.vim/UltiSnips/sh.snippets).
-
-## Shell script template
-
-An annotated template for Bash shell scripts:
-
-For now, see <https://github.com/bertvv/dotfiles/blob/main/vim/.vim/UltiSnips/sh.snippets>
-
-## Resources
-
-- Araps, Dylan (2018). *Pure Bash Bible.* <https://github.com/dylanaraps/pure-bash-bible>
-- Armstrong, Paul (s.d.). *Shell Style Guide.* <https://google.github.io/styleguide/shell.xml>
-- Bash Hackers Wiki. <http://wiki.bash-hackers.org/start>
-- Bentz, Yoann (2016). *Good practices for writing shell scripts.* <http://www.yoone.eu/articles/2-good-practices-for-writing-shell-scripts.html>
-- Berkholz, Donny (2011). *Bash shell-scripting libraries.* <https://dberkholz.com/2011/04/07/bash-shell-scripting-libraries/>
-- Billemont, Maarten (2017). The Bash Guide. <http://guide.bash.academy/>
-- Brady, Pádraig (2008). *Common Shell Script Mistakes.* <http://www.pixelbeat.org/programming/shell_script_mistakes.html>
-- Cooper, Mendel (2014). *The Advanced Bash Scripting Guide (ABS).* <http://www.tldp.org/LDP/abs/html/>
-- Fox, Brian and Ramey, Chet (2009). *bash(1) man page.* <http://linux.die.net/man/1/bash>
-- Free Software Foundation (2014). *Bash Reference Manual.* <https://www.gnu.org/software/bash/manual/bashref.html>
-- Gite, Vivek (2010). *Linux Shell Scripting Tutorial (LSST) v2.0.* <https://bash.cyberciti.biz/guide/>
-- GreyCat (Ed.) (2015). *Bash Guide.* <http://mywiki.wooledge.org/BashGuide>
-- GreyCat (Ed.) (2017). *Bash Frequently Asked Questions.* <https://mywiki.wooledge.org/BashFAQ>
-- GreyCat (Ed.) (2020). *Bash Pitfalls.* <https://mywiki.wooledge.org/BashPitfalls>
-- Jones, M. Tim (2011). *Evolution of shells in Linux: From Bourne to Bash and beyond.* <https://www.ibm.com/developerworks/library/l-linux-shells/>
-- Lavi, Kfir (2012). *Defensive Bash Programming.* <http://www.kfirlavi.com/blog/2012/11/14/defensive-bash-programming>
-- Maxwell, Aaron (2014). *Use the Unofficial Bash Strict Mode (Unless You Looove Debugging)*. <http://redsymbol.net/articles/unofficial-bash-strict-mode/>
-- Pennarun, Avery (2011). *Insufficiently known POSIX shell features.* <http://apenwarr.ca/log/?m=201102#28>
-- Rousseau, Thibaut (2017). **Shell Scripts Matter.** <https://dev.to/thiht/shell-scripts-matter>
-- Sheppard, Simon (s.d.). *Bash Keyboard Shortcuts.* <http://ss64.com/bash/syntax-keyboard.html>
-- Woodruff, William (2020). *Anybody can write good bash (with a little effort).* <https://blog.yossarian.net/2020/01/23/Anybody-can-write-good-bash-with-a-little-effort>
-- When to use Bash: <https://hackaday.com/2017/07/21/linux-fu-better-bash-scripting/#comment-3793634>
-
-### Templates
-
-- bash-script-template <https://github.com/ralish/bash-script-template>
-- Bash3 Boilerplate <https://github.com/kvz/bash3boilerplate>
-
-### Learning
-
-- <https://cmdchallenge.com/>
