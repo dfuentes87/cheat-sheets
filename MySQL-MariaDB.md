@@ -2,40 +2,45 @@
 
 ## CLI
 
-
 - Log in as `user` on another `host`, and use database `mydb` (password is prompted):
 
-    ```
+    ```bash
     mysql -h host -u user -p mydb
     ```
 
-- Setting the root password (after clean install):
+- Secure MySQL/MariaDB after a clean install:
 
-    ```
-    mysqladmin password "my new password"
+    ```bash
+    mysql_secure_installation
     ```
 
 ## Queries
-
-First log in as root and use the `mysql` database: `mysql -uroot -p mysql` (password is prompted). Don't forget that every query must be terminated with `;`
 
 In the overview below, CAPITALIZED words are part of the SQL syntax, lowercase words are names of tables, columns, etc.
 
 | Task                            | Query                                        |
 | :---                            | :---                                         |
-| List databases                  | `SHOW DATABASES;`                            |
-| Change active database          | `USE dbname;`                                |
-| Change to the "system" database | `USE mysql;`                                 |
-| Show tables in active database  | `SHOW TABLES;`                               |
 | Show table properties           | `DESCRIBE tablename;`                        |
-| List all users                  | `SELECT user,host,password FROM mysql.user;` |
-| List databases                  | `SELECT host,db,user FROM mysql.db;`         |
-| Quit                            | `exit` or `Ctrl-D`                           |
-
+| List users                      | `SELECT user,host FROM mysql.user;`          |
+| Show installed components       | `SELECT * FROM mysql.component;`             |
 
 ### Resetting the root password
 
-TODO
+1. Stop the mysql/mariadb service
+2. Create a file owned by the `mysql` user with the query to change the password. The file should also be somewhere accesible by the mysql user.
+
+    ```bash
+        ALTER USER 'root'@'localhost' IDENTIFIED BY 'NEW_PASSWORD';
+    ```
+
+3. Sudo as the mysql user and manually start the mysql service
+
+    ```bash
+        mysqld --init-file=/path/to/file 
+    ```
+
+4. Let the service fully start then kill it: `pkill mysql`
+5. Start the mysql/mariadb service as normal
 
 ## Create a new database and user
 
@@ -53,8 +58,7 @@ In this example, the database is `drupal`.
 
 Backup: `mysqldump -u root -p drupal > drupal_backup.sql`
 
-
 Restore:
 
-  - First, ensure that the `drupal` database exists (see above)
-  - `mysql -u root -p drupal < drupal_backup.sql`
+- First, ensure that the `drupal` database exists
+- `mysql -u root -p drupal < drupal_backup.sql`

@@ -4,57 +4,38 @@
 
 | Task                      | Command                                |
 | :---                      | :---                                   |
-| Watch command output      | watch -n SECONDS 'cmd1 \| cmd2'       |
+| Watch command output      | `watch -n SECONDS 'cmd1 \| cmd2'`       |
 
 ## Network configuration
 
 Easy mode: Use `nmtui`
 
+Manual mode: Use `nmcli`
+
 | Action                             | Command                                       |
 | :---                               | :---                                          |
-| Set IP address of an interface*    | `ip address add 192.168.56.1/24 dev vboxnet0` |
-
-
-### Host name
-
-There are *three* kinds of host names:
-
-- Static: "traditional" host name, stored in `/etc/hostname`
-- Transient: dynamic, set in kernel. Default value is the static host name, can be set by e.g. DHCP or mDNS.
-- Pretty: free form, for presentation to the user. Default value is the static host name.
-
-| Action                 | Command                                         |
-| :---                   | :---                                            |
-| Get host names        | `hostnamectl`                                   |
-| Set (all) host names   | `hostnamectl set-hostname HOSTNAME`             |
-| Set specific host name | `hostnamectl set-hostname --static HOSTNAME`    |
-|                        | `hostnamectl set-hostname --transient HOSTNAME` |
-|                        | `hostnamectl set-hostname --pretty HOSTNAME`    |
+| Set IP address of an interface     | `nmcli con modify 'ens192' ipv4.method manual ipv4.addresses 192.168.1.181/24 gw4 192.168.1.1` |
+| Set DNS Servers                    | `nmcli con modify 'ens192' ipv4.dns 4.2.2.2`  |
 
 ### Resources
 
-* [RedHat Enterprise Linux 7 Networking Guide](https://access.redhat.com/site/documentation/en-US/Red_Hat_Enterprise_Linux/7-Beta/html/Networking_Guide/index.html)
 * [Fedora Wiki: Networking/CLI](https://fedoraproject.org/wiki/Networking/CLI)
 
-
-## Managing services with `systemctl`
+## Managing services
 
 | Action                                      | Command                                          |
 | :---                                        | :---                                             |
 | List services                               | `systemctl list-units --type service`            |
 | List failed services on boot                | `sudo systemctl --failed`                        |
-| *Kill* SERVICE (all processes) with SIGTERM | `sudo systemctl kill SERVICE.service`            |
-| *Kill* SERVICE (all processes) with SIGKILL | `sudo systemctl kill -s SIGKILL SERVICE.service` |
+| Kill service with SIGTERM (15)              | `sudo systemctl kill SERVICE.service`            |
+| Kill service with SIGKILL (9)               | `sudo systemctl kill -s SIGKILL SERVICE.service` |
 
-## Runlevels
-
-Run with root privileges (`sudo`)
+## Targets (runlevels)
 
 | Action                     | Command                                  |
 | :---                       | :---                                     |
 | Go to single user mode     | `systemctl rescue`                       |
 | Go to multi-user mode      | `systemctl isolate multi-user.target`    |
-| (= old runlevel 3)         | `systemctl isolate runlevel3.target`     |
 | Go to graphical level      | `systemctl isolate graphical.target`     |
 | Get default runlevel       | `systemctl get-default`                  |
 | Set default runlevel       | `systemctl set-default graphical.target` |
@@ -63,18 +44,18 @@ Run with root privileges (`sudo`)
 
 ### Resources
 
-* [RedhHat 7 System Administrator's Guide](https://access.redhat.com/site/documentation/en-US/Red_Hat_Enterprise_Linux/7-Beta/html/System_Administrators_Guide/sect-Managing_Services_with_systemd-Services.html)
+* [How to Change Runlevels (targets) in SystemD](https://www.tecmint.com/change-runlevels-targets-in-systemd/)
 * [Systemd for Administrators, Part IV: Killing Services](http://0pointer.de/blog/projects/systemd-for-admins-4.html)
 
-## Perusing system logs
+## Journalctl
 
 | Action                               | Command                                                       |
 | :---                                 | :---                                                          |
 | Show log since last boot             | `journalctl -b`                                               |
 | Kernel messages (like `dmesg`)       | `journalctl -k`                                               |
-| Show latest log and wait for changes | `journalctl -f`                                               |
-| Reverse output (newest first)        | `journalctl -r`                                               |
+| Show latest log and tail             | `journalctl -f`                                               |
 | Show only errors and worse           | `journalctl -b -p err`                                        |
+| Filter on time (relative)            | `journalctl --since "1 hour ago"`                             |
 | Filter on time (example)             | `journalctl --since=2014-06-00 --until="2014-06-07 12:00:00"` |
 | Since yesterday                      | `journalctl --since=yesterday`                                |
 | Show only log of SERVICE             | `journalctl -u SERVICE`                                       |
@@ -97,20 +78,18 @@ Traditionally, logs are text files in `/var/log`. Some services still write thei
 
 The `firewalld-cmd` should run with root privileges, do always use `sudo`.
 
-| Action                           | Command                                                          |
-| :---                             | :---                                                             |
-| List supported zones             | `firewall-cmd --get-zones`                                       |
-| List preconfigured services      | `firewall-cmd --get-services`                                    |
-| Enabled features in current zone | `firewall-cmd --list-all`            |
-| Turn panic mode on               | `firewall-cmd --panic-on`                                        |
-| Turn panic mode off              | `firewall-cmd --panic-off`                                       |                                                                  |
+| Action                           | Command                        |
+| :---                             | :---                           |
+| List supported zones             | `firewall-cmd --get-zones`     |
+| List preconfigured services      | `firewall-cmd --get-services`  |
+| Enabled features in current zone | `firewall-cmd --list-all`      |
+| Turn panic mode on               | `firewall-cmd --panic-on`      |
+| Turn panic mode off              | `firewall-cmd --panic-off`     |
 
 * Configuration is stored in `/etc/firewalld` and `/usr/lib/firewalld`
 * The default zone is `public`, which you don't have to specify on the command line when adding/removing rules
 
-
 ### Resources
 
-* [Using Firewalls, in *RHEL 7 Security Guide*](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Security_Guide/sec-Using_Firewalls.html)
-* [FirewallD, in *Fedora Project Wiki*](https://fedoraproject.org/wiki/FirewallD#Using_firewall-cmd)
+* [FirewallD in the Fedora Project Wiki](https://fedoraproject.org/wiki/FirewallD#Using_firewall-cmd)
 * [Deprecated Linux networking commands and their replacements](https://dougvitale.wordpress.com/2011/12/21/deprecated-linux-networking-commands-and-their-replacements/)

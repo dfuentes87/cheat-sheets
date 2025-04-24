@@ -8,10 +8,9 @@ sudo screen /dev/ttyUSB0 9600
 
 ## Show
 
-
 Getting started:
 
-```
+```plaintext
 Router>enable
 Router#configure terminal
 Router(config)#
@@ -23,11 +22,11 @@ Router(config)#
 | Show IPv6 settings | `show ipv6 interface brief` |
 | Show routing table | `show ip route`             |
 
-## `config-if`
+## config-if
 
 Set an IPv6 address:
 
-```
+```plaintext
 Router(config)#interface G0/0/0
 Router(config-if)#ipv6 address 2001:DB8:0:1::/64
 Router(config-if)#ipv6 enable
