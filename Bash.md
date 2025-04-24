@@ -2,8 +2,12 @@
 
 ## General
 
-- The principles of [Clean Code](https://www.pearson.com/us/higher-education/program/Martin-Clean-Code-A-Handbook-of-Agile-Software-Craftsmanship/PGM63937.html) apply to Bash as well
-- Always use long parameter notation when available. This makes the script more readable, especially for lesser known/used commands that you don't remember all the options for.
+- Prepend a command with `\` to override alias/builtin lookup.
+
+## Scripting
+
+- The principles of [Clean Code](https://www.goodreads.com/book/show/3735293-clean-code) apply to Bash as well.
+- Always use long parameter notation in scripts. This makes them more readable, especially for lesser known/used commands that you or someone else don't remember all the options for.
 
     ```bash
     # Avoid:
@@ -13,48 +17,16 @@
     rm --recursive --force -- "${dir}"
     ```
 
-- Don't use:
-
-    ```bash
-    cd "${foo}"
-    [...]
-    cd ..
-    ```
-
-    but
-
-    ```bash
-    (
-      cd "${foo}"
-      [...]
-    )
-    ```
-
-    `pushd` and `popd` may also be useful:
-
-    ```bash
-    pushd "${foo}"
-    [...]
-    popd
-    ```
-
-- Use `nohup foo | cat &` if `foo` must be started from a terminal and run in the background.
-
-- Prepend a command with `\` to override alias/builtin lookup.
-
-## Variables
+### Variables
 
 - Prefer local variables within functions over global variables
 - If you need global variables, make them readonly
-- Variables should always be referred to in the `${var}` form (as opposed to `$var`.
-- Variables should always be quoted, especially if their value may contain a whitespace or separator character: `"${var}"`
 - Capitalization:
-    - Environment (exported) variables: `${ALL_CAPS}`
-    - Local variables: `${lower_case}`
+  - Environment (exported) variables: `${ALL_CAPS}`
+  - Local variables: `${lower_case}`
 - Positional parameters of the script should be checked, those of functions should not
-- Some loops happen in subprocesses, so don’t be surprised when setting variabless does nothing after them. Use stdout and `grep`ing to communicate status.
 
-## Colors
+### Colors
 
 Don't output ANSI colour codes directly - your output could redirect to a file, or perhaps the user simply prefers no colour. Use tput instead, and add a little snippet like this to the top of your script:
 
@@ -62,10 +34,11 @@ Don't output ANSI colour codes directly - your output could redirect to a file, 
 
 This checks that the tput command exists (more reliable than `which`), that stdout is a tty, and that the NO_COLOR env var is not set. If any of these conditions are false, a no-op tput function is defined.
 
-Summarized from source: https://news.ycombinator.com/item?id=41536036
+Summarized from [HckerNews Post](https://news.ycombinator.com/item?id=41536036)
 
-### Basics
-```
+#### Basics
+
+```plaintext
 tput sgr0
 normal=$(tput sgr0)
 bold=$(tput bold) # was: Bright
@@ -74,8 +47,9 @@ reverse=$(tput smso)
 underline=$(tput smul)
 ```
 
-### Foreground colors
-```
+#### Foreground colors
+
+```plaintext
 black=$(tput setaf 0)        #000000
 maroon=$(tput setaf 1)       #800000
 green=$(tput setaf 2)        #008000
@@ -93,8 +67,10 @@ magenta=$(tput setaf 13)     #ff00ff
 aqua=$(tput setaf 14)        #00ffff
 white=$(tput setaf 15)       #ffffff
 ```
-### Background colors
-```
+
+#### Background colors
+
+```plaintext
 black_bg=$(tput setab 0)     #000000
 maroon_bg=$(tput setab 1)    #800000
 green_bg=$(tput setab 2)     #008000
@@ -113,10 +89,10 @@ aqua_bg=$(tput setab 14)     #00ffff
 white_bg=$(tput setab 15)    #ffffff
 ```
 
-## Output and redirection
+### Output and redirection
 
 - [For various reasons](https://www.in-ulm.de/~mascheck/various/echo+printf/), `printf` is preferable to `echo`. `printf` gives more control over the output, it's more portable and its behaviour is defined better.
-- Print error messages on stderr. E.g., I use the following function:
+- Print error messages on stderr, e.g., use the following function:
 
     ```bash
     error() {
@@ -124,7 +100,7 @@ white_bg=$(tput setab 15)    #ffffff
     }
     ```
 
-- Name heredoc tags with what they’re part of, like:
+- Name heredoc tags with what they’re part of, such as:
 
     ```bash
     cat <<HELPMSG
@@ -151,7 +127,7 @@ white_bg=$(tput setab 15)    #ffffff
     printf "..." | sudo tee /root/some_file > /dev/null
     ```
 
-## Functions
+### Functions
 
 Bash can be hard to read and interpret. Using functions can greatly improve readability. Principles from Clean Code apply here.
 
@@ -188,7 +164,7 @@ Bash can be hard to read and interpret. Using functions can greatly improve read
     fi
     ```
 
-## Cleanup code
+### Cleanup code
 
 An idiom for tasks that need to be done before the script ends (e.g. removing temporary files, etc.). The exit status of the script is the status of the last statement *before* the `finish` function.
 
@@ -203,7 +179,7 @@ trap finish EXIT ERR
 
 Source: Aaron Maxwell, [How "Exit Traps" can make your Bash scripts way more robust and reliable](http://redsymbol.net/articles/bash-exit-traps/).
 
-## Writing robust scripts and debugging
+### Writing robust scripts and debugging
 
 Bash is not very easy to debug. There's no built-in debugger like you have with other programming languages. By default, undefined variables are interpreted as empty strings, which can cause problems further down the line. A few tips that may help:
 
@@ -224,6 +200,6 @@ Bash is not very easy to debug. There's no built-in debugger like you have with 
     ```
 
 - Use Bash's debug output feature. This will print each statement after applying all forms of substitution (parameter/command substitution, brace expansion, globbing, etc.)
-    - Run the script with `bash -x myscript.sh`
-    - Put `set -x` at the top of the script
-    - If you only want debug output in a specific section of the script, put `set -x` before and `set +x` after the section.
+  - Run the script with `bash -x myscript.sh`
+  - Put `set -x` at the top of the script
+  - If you only want debug output in a specific section of the script, put `set -x` before and `set +x` after the section.

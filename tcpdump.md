@@ -12,8 +12,7 @@
 | Don't resolve adresses and port numbers | `-nn`               |
 | Verbose output                          | `-v`, `-vv`, `-vvv` |
 
-(1) This saved file (.pcap extension is customary) can then be imported in
-Wireshark for further study.
+(1) This saved file can then be imported in Wireshark for further study.
 
 ### Basic usage examples
 
@@ -30,11 +29,11 @@ Wireshark for further study.
 ### Advanced usage examples
 
 - Capture traffic on a remote server with tcpdump, pipe to Wireshark:
-    - `ssh root@remotesystem 'tcpdump -s0 -c 1000 -nn -w - not port 22' | wireshark -k -i`
-- Capture FTP credentials and commands:
-    - `sudo tcpdump -nn -v port ftp or ftp-data`
+
+  - `ssh root@remotesystem 'tcpdump -s0 -c 1000 -nn -w - not port 22' | wireshark -k -i`
+
 - Monitor DHCP request and reply:
-    - `sudo tcpdump -v -n port 67 or 68`
+  - `sudo tcpdump -v -n port 67 or 68`
 
 ## Port scanning
 
@@ -70,7 +69,7 @@ separated with commas (`a,b,c`). Examples:
 
 **Example:** Check if a DHCP server is available (broadcast DHCP DISCOVER).
 
-```
+```plaintext
 $ sudo nmap --script broadcast-dhcp-discover
 
 Starting Nmap 6.40 ( http://nmap.org ) at 2018-11-22 11:09 UTC
@@ -86,12 +85,9 @@ Pre-scan script results:
 |_  Server Identifier: 10.0.2.2
 WARNING: No targets were specified, so 0 hosts scanned.
 Nmap done: 0 IP addresses (0 hosts up) scanned in 0.14 seconds
-
 ```
 
 ## Resources
 
-- Lyon, Gordon "Fyodor" (2011) *Port scanning techniques* in "Nmap network
-  scanning". Retrieved 2018-11-22 from
-  <https://nmap.org/book/man-port-scanning-techniques.html>
+- Lyon, Gordon "Fyodor" (2011) *Port scanning techniques* in "Nmap network scanning". Retrieved 2018-11-22 from <https://nmap.org/book/man-port-scanning-techniques.html>
 - Hacker Target (2018) *Tcpdump examples*. Retrieved 2018-11-27 from <https://hackertarget.com/tcpdump-examples/>
